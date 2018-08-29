@@ -1,9 +1,9 @@
-import { Pool } from 'pg';
+import { Pool } from "pg";
 
 export const connectionPool = new Pool({
-	user: process.env.PGUSER,
-	host: 'localhost',
-	database: process.env.PGHOST,
-	password: process.env.PGPASSWORD,
-	port: 5432
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: "postgres",
+  password: process.env.PGPASSWORD,
+  port: 5432
 });
