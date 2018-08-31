@@ -40,15 +40,15 @@ userRouter.get("", async (req: Request, resp: Response) => {
 /**
  * Add a new user
  */
-userRouter.post("", async (req, resp) => {
+userRouter.post("", async (req, res) => {
   console.log("creating user");
   try {
     const id = await userDao.createUser(req.body);
-    resp.status(201);
-    resp.json(id);
+    res.status(201);
+    res.json(id);
   } catch (err) {
     console.log(err);
-    resp.sendStatus(500);
+    res.sendStatus(500);
   }
 });
 
@@ -66,19 +66,23 @@ userRouter.post("", async (req, resp) => {
 //   }
 // })
 
-// userRouter.post('/login', async (req, resp) => {
+/**
+ * Login with username and password
+ */
 
-//   try {
-//     const user = await userDao.findByUsernameAndPassword(req.body.username, req.body.password);
-
-//     if (user) {
-//       req.session.user = user;
-//       resp.json(user);
-//     } else {
-//       resp.sendStatus(401);
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     resp.sendStatus(500);
-//   }
-// })
+userRouter.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await userDao.findByUsernameAndPassword(username, password);
+    if (user) {
+      req.session.user = user;
+      res.json(user);
+    } else {
+      res.sendStatus(401);
+    }
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+    res.json({ msg: "Log In Success" });
+  }
+});

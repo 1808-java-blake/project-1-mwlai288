@@ -8,12 +8,12 @@ import { User } from "../model/user";
 export async function findAll(): Promise<User[]> {
   const client = await connectionPool.connect();
   try {
-    const resp = await client.query(
+    const res = await client.query(
       `SELECT * FROM expense_reimbursement.ers_users`
     );
     // extract the users
     const users = [];
-    resp.rows.forEach(user_result => {
+    res.rows.forEach(user_result => {
       users.push(user_result);
     });
     return users;
@@ -44,6 +44,48 @@ export async function createUser(user: User): Promise<number> {
       ]
     );
     return res.rows[0].ers_user_id;
+  } finally {
+    client.release();
+  }
+}
+
+/**
+ * Add a reimbursement request to a users list
+ * @param reimbursementId
+ * @param userId
+ */
+// export async function addReimbursementRequest(reimbursementId: number, userId: number): Promise<any> {
+//   const client = await connectionPool.connect();
+//   try {
+//     const res = await client.query(
+//       `INSERT INTO expense_reimbursement.ers_reimbursement
+//         (reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id)
+//         VALUES ($1, $2)`, [userId, movieId]);
+//   } finally {
+//     client.release();
+//   }
+// }
+
+/**
+ * Retreive a single user by username and password, will also retreive all of that users movies
+ * @param id
+ */
+export async function findByUsernameAndPassword(
+  username: string,
+  password: string
+): Promise<User> {
+  const client = await connectionPool.connect();
+  try {
+    const res = await client.query(
+      `SELECT * FROM expense_reimbursement.ers_users u
+        WHERE u.ers_username = $1
+        AND u.ers_password = $2`,
+      [username, password]
+    );
+    if (res.rows.length !== 0) {
+      return userConverter(res.rows[0]); // get the user data from first row
+    }
+    return null;
   } finally {
     client.release();
   }
