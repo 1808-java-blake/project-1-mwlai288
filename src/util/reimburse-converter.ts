@@ -12,7 +12,7 @@ export function reimburseRequestConverter(
     reimburserequest.reimb_description,
     reimburserequest.reimb_resolver,
     reimburserequest.reimb_author,
-    reimburserequest.reimb_status,
-    reimburserequest.reimb_type
+    reimburserequest.reimb_status_id,
+    reimburserequest.reimb_type_id
   );
 }

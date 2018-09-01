@@ -5,9 +5,9 @@ export class ReimbRequest {
   resolved = "";
   description = "";
   author = 0;
-  resolver = 0;
-  status = 0;
-  type = 0;
+  resolverId = 0;
+  statusId = 0;
+  typeId = 0;
 
   constructor(
     id?: number,
@@ -26,8 +26,8 @@ export class ReimbRequest {
     resolved && (this.resolved = resolved);
     description && (this.description = description);
     author && (this.author = author);
-    resolver && (this.resolver = resolver);
-    status && (this.status = status);
-    type && (this.type = type);
+    resolver && (this.resolverId = resolver);
+    status && (this.statusId = status);
+    type && (this.typeId = type);
   }
 }
