@@ -1,6 +1,7 @@
 import { connectionPool } from "../util/connection.util";
 import { userConverter } from "../util/user-converter";
 import { User } from "../model/user";
+import { reimburseRequestConverter } from "../util/reimburse-converter";
 
 /**
  * Retreive all users from the DB
@@ -54,17 +55,22 @@ export async function createUser(user: User): Promise<number> {
  * @param reimbursementId
  * @param userId
  */
-// export async function addReimbursementRequest(reimbursementId: number, userId: number): Promise<any> {
-//   const client = await connectionPool.connect();
-//   try {
-//     const res = await client.query(
-//       `INSERT INTO expense_reimbursement.ers_reimbursement
-//         (reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id)
-//         VALUES ($1, $2)`, [userId, movieId]);
-//   } finally {
-//     client.release();
-//   }
-// }
+export async function addReimbursementRequest(
+  reimbursementId: number,
+  userId: number
+): Promise<any> {
+  const client = await connectionPool.connect();
+  try {
+    const res = await client.query(
+      `INSERT INTO expense_reimbursement.ers_reimbursement
+        (reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [userId, reimbursementId]
+    );
+  } finally {
+    client.release();
+  }
+}
 
 /**
  * Retreive a single user by username and password, will also retreive all of that users movies
@@ -76,16 +82,44 @@ export async function findByUsernameAndPassword(
 ): Promise<User> {
   const client = await connectionPool.connect();
   try {
+    console.log("here");
     const res = await client.query(
       `SELECT * FROM expense_reimbursement.ers_users u
         WHERE u.ers_username = $1
         AND u.ers_password = $2`,
       [username, password]
     );
+    console.log(res.rows[0]);
     if (res.rows.length !== 0) {
       return userConverter(res.rows[0]); // get the user data from first row
     }
     return null;
+  } finally {
+    client.release();
+  }
+}
+
+/**
+ * Retreive a single user by id, will also retreive all of that users requests
+ * @param id
+ */
+export async function findById(id: number): Promise<User> {
+  const client = await connectionPool.connect();
+  try {
+    const res = await client.query(
+      `SELECT * FROM expense_reimbursement.ers_users u
+      WHERE u.ers_users_id = $1`,
+      [id]
+    );
+
+    const user = userConverter(res.rows[0]); // get the user data from first row
+    // get the requests from all the rows
+    console.log(user);
+    res.rows.forEach(request => {
+      request.reimb_id &&
+        user.reimbursement.push(reimburseRequestConverter(request));
+    });
+    return user;
   } finally {
     client.release();
   }

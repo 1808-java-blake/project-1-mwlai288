@@ -22,20 +22,22 @@ userRouter.get("", async (req: Request, resp: Response) => {
 /**
  * Find user by id
  */
-// userRouter.get('/:id', async (req, resp) => {
-//   const id = +req.params.id; // convert the id to a number
-//   console.log(`retreiving user with id  ${id}`)
-//   try {
-//     let user = await userDao.findById(id);
-//     if (user !== undefined) {
-//       resp.json(user);
-//     } else {
-//       resp.sendStatus(400);
-//     }
-//   } catch (err) {
-//     resp.sendStatus(500);
-//   }
-// });
+userRouter.get("/:id", async (req, resp) => {
+  const id = +req.params.id; // convert the id to a number
+  console.log(`retreiving user with id  ${id}`);
+  try {
+    let user = await userDao.findById(id);
+    console.log(user);
+    if (user !== undefined) {
+      resp.json(user);
+    } else {
+      resp.sendStatus(400);
+    }
+  } catch (err) {
+    console.log(err);
+    resp.sendStatus(500);
+  }
+});
 
 /**
  * Add a new user
@@ -55,16 +57,20 @@ userRouter.post("", async (req, res) => {
 /**
  * Add a movie to users list
  */
-// userRouter.post('/:id/movies', async (req, resp) => {
-//   console.log('creating user')
-//   try {
-//     const id = await userDao.addMovieToUser(req.body.movieId, req.params.id);
-//     resp.sendStatus(201);
-//   } catch (err) {
-//     console.log(err);
-//     resp.sendStatus(500);
-//   }
-// })
+userRouter.post("/:id/reimbursement", async (req, resp) => {
+  console.log("creating user");
+  try {
+    const { reimbursementId } = req.body;
+    const id = await userDao.addReimbursementRequest(
+      reimbursementId,
+      req.params.id
+    );
+    resp.sendStatus(201);
+  } catch (err) {
+    console.log(err);
+    resp.sendStatus(500);
+  }
+});
 
 /**
  * Login with username and password
@@ -72,8 +78,11 @@ userRouter.post("", async (req, res) => {
 
 userRouter.post("/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await userDao.findByUsernameAndPassword(username, password);
+    const { ers_username, ers_password } = req.body;
+    const user = await userDao.findByUsernameAndPassword(
+      ers_username,
+      ers_password
+    );
     if (user) {
       req.session.user = user;
       res.json(user);

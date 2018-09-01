@@ -7,7 +7,7 @@ export class User {
   first_name = "";
   last_name = "";
   email = "";
-  role = "";
+  role = 0;
   reimbursement: ReimbRequest[] = [];
   constructor(
     id?: number,
@@ -16,7 +16,7 @@ export class User {
     first_name?: string,
     last_name?: string,
     email?: string,
-    role?: string,
+    role?: number,
     reimbursement?: ReimbRequest[]
   ) {
     id && (this.id = id);
