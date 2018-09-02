@@ -18,24 +18,24 @@ export async function findAll(): Promise<ReimbRequest[]> {
   }
 }
 
-// /**
-//  * Retreive a movie by its id
-//  * @param id
-//  */
-// export async function findById(id: number): Promise<Movie> {
-//   const client = await connectionPool.connect();
-//   try {
-//     const res = await client.query('SELECT * FROM movies.movies WHERE movie_id = $1', [id]);
-//     let movie: SqlMovie = res.rows[0];
-//     if (movie !== undefined) {
-//       return movieConverter(movie);
-//     } else {
-//       return undefined;
-//     }
-//   } finally {
-//     client.release();
-//   }
-// }
+/**
+ * Retreive a request by its id
+ * @param id
+ */
+export async function findById(id: number): Promise<ReimbRequest> {
+  const client = await connectionPool.connect();
+  try {
+    const res = await client.query('SELECT * FROM expense_reimbursement.ers_reimbursement WHERE reimb_id = $1', [id]);
+    let reimbursement: SqlReimburseRequest = res.rows[0];
+    if (reimbursement !== undefined) {
+      return reimburseRequestConverter(reimbursement);
+    } else {
+      return undefined;
+    }
+  } finally {
+    client.release();
+  }
+}
 
 /**
 //  * Add a new reimbursement request to the DB

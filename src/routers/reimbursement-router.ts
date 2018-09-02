@@ -23,23 +23,23 @@ reimbursementRouter.get("", [
 ]);
 
 // /**
-//  * Find movie by id
+//  * Find reimbursement by id
 //  */
-// reimbursementRouter.get('/:id', async (req, res) => {
-//   const id = +req.params.id; // convert the id to a number
-//   console.log(`retreiving movie with id  ${id}`)
-//   try {
-//     let movie = await movieDao.findById(id);
-//     if (movie !== undefined) {
-//       res.json(movie);
-//     } else {
-//       res.sendStatus(400);
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     res.sendStatus(500);
-//   }
-// });
+reimbursementRouter.get("/:id", async (req, res) => {
+  const id = +req.params.id; // convert the id to a number
+  console.log(`retreiving movie with id  ${id}`);
+  try {
+    let reimbursement = await reimbursementDao.findById(id);
+    if (reimbursement !== undefined) {
+      res.json(reimbursement);
+    } else {
+      res.sendStatus(400);
+    }
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
 
 /**
  * Create Reimbursement
@@ -49,12 +49,13 @@ reimbursementRouter.post("", [
   async (req, res) => {
     try {
       const id = await reimbursementDao.createReimbursement(req.body);
-      console.log(id);
       res.status(201);
       res.json(id);
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
+      console.log("reimbursement request created");
+      res.json("reimbursement request created");
     }
   }
 ]);
