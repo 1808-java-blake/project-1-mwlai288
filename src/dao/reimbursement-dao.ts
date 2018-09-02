@@ -4,7 +4,7 @@ import { reimburseRequestConverter } from "../util/reimburse-converter";
 import { SqlReimburseRequest } from "../dto/sql-reimb-req";
 
 /**
- * Retreive all movies from the database
+ * Retreive all requests from the database
  */
 export async function findAll(): Promise<ReimbRequest[]> {
   const client = await connectionPool.connect();
@@ -19,13 +19,16 @@ export async function findAll(): Promise<ReimbRequest[]> {
 }
 
 /**
- * Retreive a request by its id
+ * Retrieve a request by its id
  * @param id
  */
 export async function findById(id: number): Promise<ReimbRequest> {
   const client = await connectionPool.connect();
   try {
-    const res = await client.query('SELECT * FROM expense_reimbursement.ers_reimbursement WHERE reimb_id = $1', [id]);
+    const res = await client.query(
+      "SELECT * FROM expense_reimbursement.ers_reimbursement WHERE reimb_id = $1",
+      [id]
+    );
     let reimbursement: SqlReimburseRequest = res.rows[0];
     if (reimbursement !== undefined) {
       return reimburseRequestConverter(reimbursement);
@@ -59,6 +62,26 @@ export async function createReimbursement(reimbursement): Promise<number> {
         reimbursement.statusId,
         reimbursement.typeId
       ]
+    );
+    return res.rows[0].reimb_id;
+  } finally {
+    client.release();
+  }
+}
+
+/**
+ * Update a reimbursement request
+ * @param id
+ */
+export async function updateRequest(
+  reimbursement,
+  id: number
+): Promise<ReimbRequest> {
+  const client = await connectionPool.connect();
+  try {
+    const res = await client.query(
+      "UPDATE expense_reimbursement.ers_reimbursement SET reimb_resolver = $1, reimb_status_id = $2 WHERE reimb_id = $3 RETURNING reimb_id",
+      [reimbursement.resolverId, reimbursement.statusId, id]
     );
     return res.rows[0].reimb_id;
   } finally {

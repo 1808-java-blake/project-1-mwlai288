@@ -22,6 +22,25 @@ reimbursementRouter.get("", [
   }
 ]);
 
+/**
+ * Create Reimbursement
+ */
+reimbursementRouter.post("", [
+  // authMiddleware("2"),
+  async (req, res) => {
+    try {
+      const id = await reimbursementDao.createReimbursement(req.body);
+      res.status(201);
+      res.json(id);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+      console.log("reimbursement request created");
+      res.json("reimbursement request created");
+    }
+  }
+]);
+
 // /**
 //  * Find reimbursement by id
 //  */
@@ -42,20 +61,16 @@ reimbursementRouter.get("/:id", async (req, res) => {
 });
 
 /**
- * Create Reimbursement
+ * Update Reimbursement
  */
-reimbursementRouter.post("", [
-  // authMiddleware("2"),
-  async (req, res) => {
-    try {
-      const id = await reimbursementDao.createReimbursement(req.body);
-      res.status(201);
-      res.json(id);
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(500);
-      console.log("reimbursement request created");
-      res.json("reimbursement request created");
-    }
+reimbursementRouter.put("/:id", async (req, res) => {
+  try {
+    const id = +req.params.id; // convert the id to a number
+    const updatedRequest = await reimbursementDao.updateRequest(req.body, id);
+    res.status(201);
+    res.json(updatedRequest);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
   }
-]);
+});
