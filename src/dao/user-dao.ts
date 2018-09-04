@@ -30,18 +30,18 @@ export async function findAll(): Promise<User[]> {
 export async function createUser(user: User): Promise<number> {
   const client = await connectionPool.connect();
   try {
+    console.log(user.first_name);
     const res = await client.query(
       `INSERT INTO expense_reimbursement.ers_users
       (ers_username, ers_password, user_first_name, user_last_name, user_email, user_role_id)
-      VALUES ($1,$2,$3,$4,$5,$6)
+      VALUES ($1,$2,$3,$4,$5,2)
       RETURNING ers_users_id`,
       [
         user.username,
         user.password,
         user.first_name,
         user.last_name,
-        user.email,
-        user.role
+        user.email
       ]
     );
     return res.rows[0].ers_user_id;

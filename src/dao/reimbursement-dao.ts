@@ -44,7 +44,7 @@ export async function findById(id: number): Promise<ReimbRequest> {
 //  * Add a new reimbursement request to the DB
 //  * @param reimbursement
 //  */
-export async function createReimbursement(reimbursement, id): Promise<number> {
+export async function createReimbursement(reimbursement): Promise<number> {
   const client = await connectionPool.connect();
   try {
     const res = await client.query(
