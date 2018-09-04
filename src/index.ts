@@ -47,6 +47,7 @@ app.use((req, resp, next) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+  resp.header("Access-Control-Allow-Methods", "PUT, POST");
   resp.header("Access-Control-Allow-Credentials", "true");
   next();
 });
