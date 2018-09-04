@@ -41,17 +41,19 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 
 // allows cors headers
-// app.use((req, resp, next) => {
-//   resp.header("Access-Control-Allow-Origin", "http://localhost:9001");
-//   resp.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   resp.header("Access-Control-Allow-Credentials", "true");
-//   next();
-// })
+app.use((req, resp, next) => {
+  resp.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  resp.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  resp.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 /*********************************************************************************************
  * API Routers
  ********************************************************************************************/
-// app.use('/movies', movieRouter);
 app.use("/users", userRouter);
 app.use("/reimbursement", reimbursementRouter);
 
