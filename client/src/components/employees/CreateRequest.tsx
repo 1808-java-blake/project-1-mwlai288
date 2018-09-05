@@ -6,29 +6,28 @@ export default class CreateRequests extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      requests: {
-        amount: 0,
-        author: 8,
-        description: "",
-        status: "Pending",
-        type: ""
-      }
+      amount: 0,
+      description: "",
+      id: 0,
+      status: "Pending",
+      typeId: 1
     };
   }
 
-  public onChange = (e: any) => {
-    const newState = { ...this.state.requests };
+  public handleChange = (e: any) => {
+    const newState = { ...this.state };
     newState[e.target.name] = e.target.value;
-    this.setState({ requests: newState });
+    this.setState(newState);
   };
 
   public createRequest = async (e: any) => {
     e.preventDefault();
     const payload = {
       amount: this.state.amount,
-      author: this.state.author,
       description: this.state.description,
-      type: this.state.type
+      id: this.state.id,
+      status: this.state.status,
+      typeId: this.state.typeId
     };
     console.log(payload);
     try {
@@ -42,28 +41,37 @@ export default class CreateRequests extends React.Component<any, any> {
     }
   };
 
-  // _signIn = async (e) => {
-  //   e.preventDefault();
-  //   const payload = {
-  //     email: this.state.email,
-  //     password: this.state.password,
-  //   }
-  //   const response = await axios.post('/auth/sign_in', payload);
-  //   setAxiosHeaders(response.headers);
-  //   this.setState({redirect: true})
-  // }
-
   public render() {
     return (
       <div>
         <h2>Submit a Reimbursement Request</h2>
+        <p>Please provide your user Id and reimbursement type Id.</p>
+
         <Form onSubmit={this.createRequest}>
           <FormGroup row>
             <Label for="amount" sm={2}>
               Amount
             </Label>
             <Col sm={10}>
-              <Input type="text" name="text" placeholder="Amount Spent" />
+              <Input
+                onChange={this.handleChange}
+                type="text"
+                name="amount"
+                placeholder="$ Amount Spent"
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="id" sm={2}>
+              User Id
+            </Label>
+            <Col sm={10}>
+              <Input
+                onChange={this.handleChange}
+                type="number"
+                name="id"
+                placeholder="Enter User Id"
+              />
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -72,8 +80,9 @@ export default class CreateRequests extends React.Component<any, any> {
             </Label>
             <Col sm={10}>
               <Input
+                onChange={this.handleChange}
                 type="text"
-                name="text"
+                name="description"
                 placeholder="Description of spending"
               />
             </Col>
@@ -83,12 +92,12 @@ export default class CreateRequests extends React.Component<any, any> {
               Select
             </Label>
             <Col sm={10}>
-              <Input type="select" name="type">
-                <option>Food</option>
-                <option>Travel</option>
-                <option>Lodging</option>
-                <option>Other</option>
-              </Input>
+              <Input
+                onChange={this.handleChange}
+                type="number"
+                name="typeId"
+                placeholder="1 - Lodging, 2 - Travel, 3 - Food, 4 - Other"
+              />
             </Col>
           </FormGroup>
           <FormGroup check row>
