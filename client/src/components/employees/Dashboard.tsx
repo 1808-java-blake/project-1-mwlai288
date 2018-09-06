@@ -1,7 +1,5 @@
 // import axios from "axios";
 // import * as React from "react";
-// // export interface IAppProps {
-// // }
 
 // export default class ViewRequests extends React.Component<any, any> {
 //   constructor(props: any) {

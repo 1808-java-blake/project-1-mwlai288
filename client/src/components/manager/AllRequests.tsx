@@ -1,8 +1,7 @@
 import axios from "axios";
 import * as React from "react";
-import { Link } from "react-router-dom";
-// export interface IAppProps {
-// }
+// import { Link } from "react-router-dom";
+import { Table } from "reactstrap";
 
 export default class AllRequests extends React.Component<any, any> {
   constructor(props: any) {
@@ -23,23 +22,34 @@ export default class AllRequests extends React.Component<any, any> {
     return (
       <div>
         <h2>hello</h2>
-
-        {this.state.reimbursements.map((reimbursement: any) => {
-          return (
-            <ul key={reimbursement.id}>
-              <Link to={`/request/${reimbursement.id}`}>
-                <li>Amount: ${reimbursement.amount}</li>
-                <li>Request Description: {reimbursement.description}</li>
-                <li> User Id: {reimbursement.author} </li>
-                <li> Request Submitted: {reimbursement.submitted} </li>
-                <li> Request Resolved: {reimbursement.resolved} </li>
-                <li> Resolving Manager: {reimbursement.resolverId} </li>
-                <li> Request Type: {reimbursement.typeId} </li>
-                <li> Request Status: {reimbursement.statusId} </li>
-              </Link>
-            </ul>
-          );
-        })}
+        <Table responsive hover>
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Amount</th>
+              <th>Request Description</th>
+              <th>Date Request Submitted</th>
+              <th>Date Request Resolved</th>
+              <th>Resolving Manager</th>
+              <th>Request Type</th>
+              <th>Request Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.reimbursements.map((reimbursement: any) => (
+              <tr key={reimbursement.reimb_id}>
+                <td> {reimbursement.ers_username} </td>
+                <td>${reimbursement.reimb_amount}</td>
+                <td> {reimbursement.reimb_description} </td>
+                <td> {reimbursement.reimb_submitted} </td>
+                <td> {reimbursement.reimb_resolved} </td>
+                <td> {reimbursement.reimb_resolverId} </td>
+                <td> {reimbursement.reimb_type} </td>
+                <td> {reimbursement.reimb_status} </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     );
   }
