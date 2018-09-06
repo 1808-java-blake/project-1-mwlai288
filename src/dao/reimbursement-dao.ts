@@ -76,8 +76,8 @@ export async function updateRequest(
   const client = await connectionPool.connect();
   try {
     const res = await client.query(
-      "UPDATE expense_reimbursement.ers_reimbursement SET reimb_resolver = $1, reimb_status_id = $2 WHERE reimb_id = $3 RETURNING reimb_id",
-      [reimbursement.resolverId, reimbursement.statusId, id]
+      "UPDATE expense_reimbursement.ers_reimbursement SET reimb_resolver = 2, reimb_resolved = CURRENT_TIMESTAMP, reimb_status_id = $1 WHERE reimb_id = $2 RETURNING reimb_id",
+      [reimbursement.statusId, id]
     );
     return res.rows[0].reimb_id;
   } finally {

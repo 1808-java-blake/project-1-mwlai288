@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as React from "react";
+import { Link } from "react-router-dom";
 // export interface IAppProps {
 // }
 
@@ -13,7 +14,6 @@ export default class AllRequests extends React.Component<any, any> {
 
   public async componentDidMount() {
     const res = await axios.get("http://localhost:3001/reimbursement");
-    console.log(res);
     this.setState({
       reimbursements: res.data
     });
@@ -26,10 +26,18 @@ export default class AllRequests extends React.Component<any, any> {
 
         {this.state.reimbursements.map((reimbursement: any) => {
           return (
-            <ol key={reimbursement.id}>
-              <li>${reimbursement.amount}</li>
-              <li>{reimbursement.description}</li>
-            </ol>
+            <ul key={reimbursement.id}>
+              <Link to={`/request/${reimbursement.id}`}>
+                <li>Amount: ${reimbursement.amount}</li>
+                <li>Request Description: {reimbursement.description}</li>
+                <li> User Id: {reimbursement.author} </li>
+                <li> Request Submitted: {reimbursement.submitted} </li>
+                <li> Request Resolved: {reimbursement.resolved} </li>
+                <li> Resolving Manager: {reimbursement.resolverId} </li>
+                <li> Request Type: {reimbursement.typeId} </li>
+                <li> Request Status: {reimbursement.statusId} </li>
+              </Link>
+            </ul>
           );
         })}
       </div>

@@ -2,6 +2,7 @@ import { connectionPool } from "../util/connection.util";
 import { userConverter } from "../util/user-converter";
 import { User } from "../model/user";
 import { reimburseRequestConverter } from "../util/reimburse-converter";
+// import bcrypt = require("bcrypt");
 
 /**
  * Retreive all users from the DB
@@ -30,7 +31,6 @@ export async function findAll(): Promise<User[]> {
 export async function createUser(user: User): Promise<number> {
   const client = await connectionPool.connect();
   try {
-    console.log(user.first_name);
     const res = await client.query(
       `INSERT INTO expense_reimbursement.ers_users
       (ers_username, ers_password, user_first_name, user_last_name, user_email, user_role_id)
@@ -45,6 +45,15 @@ export async function createUser(user: User): Promise<number> {
       ]
     );
     return res.rows[0].ers_user_id;
+
+    // bcrypt.genSalt(50, (err, salt)=> {
+    //   bcrypt.hash(user.password, salt, (err, hash)=> {
+    //     if (err) throw err;
+    //       user.save().then(
+
+    //       )
+    // })
+    // })
   } finally {
     client.release();
   }
@@ -82,14 +91,12 @@ export async function findByUsernameAndPassword(
 ): Promise<User> {
   const client = await connectionPool.connect();
   try {
-    console.log("here");
     const res = await client.query(
       `SELECT * FROM expense_reimbursement.ers_users u
         WHERE u.ers_username = $1
         AND u.ers_password = $2`,
       [username, password]
     );
-    console.log(res.rows[0]);
     if (res.rows.length !== 0) {
       return userConverter(res.rows[0]); // get the user data from first row
     }

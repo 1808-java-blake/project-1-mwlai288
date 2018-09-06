@@ -29,13 +29,9 @@ export default class CreateRequests extends React.Component<any, any> {
       status: this.state.status,
       typeId: this.state.typeId
     };
-    console.log(payload);
+
     try {
-      const res = await axios.post(
-        "http://localhost:3001/reimbursement",
-        payload
-      );
-      console.log(res);
+      await axios.post("http://localhost:3001/reimbursement", payload);
     } catch (error) {
       console.log(error);
     }
