@@ -24,11 +24,11 @@ userRouter.get("", async (req: Request, resp: Response) => {
  */
 userRouter.get("/:id", async (req, resp) => {
   const id = +req.params.id; // convert the id to a number
-  console.log(`retreiving user with id  ${id}`);
   try {
     let user = await userDao.findById(id);
     console.log(user);
     if (user !== undefined) {
+      req.session.user = user;
       resp.json(user);
     } else {
       resp.sendStatus(400);
@@ -93,6 +93,5 @@ userRouter.post("/login", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
-    res.json({ msg: "Log In Success" });
   }
 });

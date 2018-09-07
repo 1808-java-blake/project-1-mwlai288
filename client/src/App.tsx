@@ -19,7 +19,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={SignIn} />
               <Route path="/sign-up" component={SignUp} />
-              <Route path="/dashboard" component={Dashboard} />
+              <Route path="/users/:id" component={Dashboard} />
               <Route path="/requests" component={AllRequests} />
               <Route path="/request/:id" component={ApproveDeny} />
               <Route path="/create-request" component={CreateRequests} />

@@ -18,7 +18,6 @@ export default class AllRequests extends React.Component<any, any> {
       method: "get",
       withCredentials: true
     });
-    console.log(res);
     this.setState({
       reimbursements: res.data
     });
@@ -46,6 +45,7 @@ export default class AllRequests extends React.Component<any, any> {
           value={this.state.search}
           onChange={this.filterStatus}
         />
+
         <Table responsive hover>
           <thead>
             <tr>
@@ -60,7 +60,6 @@ export default class AllRequests extends React.Component<any, any> {
             </tr>
           </thead>
           <tbody>
-            {/* <FlipMove> */}
             {filteredStatus.map((reimbursement: any) => (
               <tr key={reimbursement.reimb_id}>
                 <td> {reimbursement.ers_username} </td>
@@ -73,7 +72,6 @@ export default class AllRequests extends React.Component<any, any> {
                 <td> {reimbursement.reimb_status} </td>
               </tr>
             ))}
-            {/* </FlipMove> */}
           </tbody>
         </Table>
       </div>

@@ -2,7 +2,6 @@ import { connectionPool } from "../util/connection.util";
 import { userConverter } from "../util/user-converter";
 import { User } from "../model/user";
 import { reimburseRequestConverter } from "../util/reimburse-converter";
-// import bcrypt = require("bcrypt");
 
 /**
  * Retreive all users from the DB
@@ -45,15 +44,6 @@ export async function createUser(user: User): Promise<number> {
       ]
     );
     return res.rows[0].ers_user_id;
-
-    // bcrypt.genSalt(50, (err, salt)=> {
-    //   bcrypt.hash(user.password, salt, (err, hash)=> {
-    //     if (err) throw err;
-    //       user.save().then(
-
-    //       )
-    // })
-    // })
   } finally {
     client.release();
   }
@@ -108,6 +98,29 @@ export async function findByUsernameAndPassword(
   }
 }
 
+export async function findRequestById(
+  username: string,
+  password: string
+): Promise<User> {
+  const client = await connectionPool.connect();
+  try {
+    const res = await client.query(
+      `SELECT * FROM expense_reimbursement.ers_users u
+        LEFT JOIN expense_reimbursement.ers_user_roles ur 
+        ON u.user_role_id = ur.ers_user_role_id
+        WHERE u.ers_username = $1
+        AND u.ers_password = $2`,
+      [username, password]
+    );
+    if (res.rows.length !== 0) {
+      return userConverter(res.rows[0]); // get the user data from first row
+    }
+    return null;
+  } finally {
+    client.release();
+  }
+}
+
 /**
  * Retreive a single user by id, will also retreive all of that users requests
  * @param id
@@ -116,8 +129,11 @@ export async function findById(id: number): Promise<User> {
   const client = await connectionPool.connect();
   try {
     const res = await client.query(
-      `SELECT * FROM expense_reimbursement.ers_users u
-      WHERE u.ers_users_id = $1`,
+      `SELECT * FROM expense_reimbursement.ers_users eu
+      LEFT JOIN expense_reimbursement.ers_reimbursement er
+      ON eu.ers_users_id = er.reimb_author
+      WHERE eu.ers_users_id = $1
+      `,
       [id]
     );
 

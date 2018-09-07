@@ -26,7 +26,7 @@ reimbursementRouter.get("", [
  * Create Reimbursement
  */
 reimbursementRouter.post("", [
-  // authMiddleware(""),
+  // authMiddleware("employee"),
   async (req, res) => {
     try {
       const id = await reimbursementDao.createReimbursement(req.body);
@@ -43,21 +43,24 @@ reimbursementRouter.post("", [
 // /**
 //  * Find reimbursement by id
 //  */
-reimbursementRouter.get("/:id", async (req, res) => {
-  const id = +req.params.id; // convert the id to a number
-  console.log(`retreiving movie with id  ${id}`);
-  try {
-    let reimbursement = await reimbursementDao.findById(id);
-    if (reimbursement !== undefined) {
-      res.json(reimbursement);
-    } else {
-      res.sendStatus(400);
+reimbursementRouter.get("/:id", [
+  // authMiddleware("manager"),
+  async (req, res) => {
+    const id = +req.params.id; // convert the id to a number
+    console.log(`retreiving movie with id  ${id}`);
+    try {
+      let reimbursement = await reimbursementDao.findById(id);
+      if (reimbursement !== undefined) {
+        res.json(reimbursement);
+      } else {
+        res.sendStatus(400);
+      }
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
     }
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
   }
-});
+]);
 
 /**
  * Update Reimbursement

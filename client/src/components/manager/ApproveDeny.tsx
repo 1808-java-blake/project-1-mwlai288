@@ -1,6 +1,6 @@
 import * as React from "react";
 import axios from "axios";
-
+import { Button } from "reactstrap";
 export default class ApproveDeny extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -93,8 +93,12 @@ export default class ApproveDeny extends React.Component<any, any> {
               placeholder={this.state.reimbursements.statusId}
             />
           </div>
-          <button onClick={this.approveRequest}>Approve</button>
-          <button onClick={this.denyRequest}>Deny</button>
+          <Button color="primary" onClick={this.approveRequest}>
+            Approve
+          </Button>
+          <Button color="danger" onClick={this.denyRequest}>
+            Deny
+          </Button>
         </form>
 
         {/* ); */}

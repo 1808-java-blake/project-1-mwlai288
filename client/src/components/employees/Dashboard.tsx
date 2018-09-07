@@ -1,23 +1,27 @@
-// import axios from "axios";
+import axios from "axios";
 import * as React from "react";
 
 export default class Dashboard extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      users: []
+      users: {}
     };
   }
 
-  // public async componentDidMount() {
-  //   const res = await axios.get("http://localhost:3001/users");
-  //   console.log(res);
-  // }
+  public async componentDidMount() {
+    const id = this.props.match.params.id;
+    const res = await axios.get(`http://localhost:3001/users/${id}`);
+    this.setState({
+      users: res.data
+    });
+  }
 
   public render() {
     return (
       <div>
-        <h2>hello</h2>
+        Welcome: {this.state.users.first_name}
+        <td>{this.state.users.username}</td>
       </div>
     );
   }

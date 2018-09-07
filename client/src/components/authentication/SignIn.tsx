@@ -25,11 +25,13 @@ export default class SignIn extends React.Component<any, any> {
         method: "post",
         withCredentials: true
       });
+
       localStorage.setItem("user", JSON.stringify(res));
-      if (res.statusText === "OK" && res.data.username === "Batman") {
+      const { id } = res.data;
+      if (res.status === 200 && res.data.username === "Batman") {
         this.props.history.push("/requests");
       } else {
-        this.props.history.push("/dashboard");
+        this.props.history.push(`/users/${id}`);
       }
     } catch (error) {
       console.log(error);

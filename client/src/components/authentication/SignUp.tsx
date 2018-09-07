@@ -24,7 +24,11 @@ export default class SignUp extends React.Component<any, any> {
       username: this.state.username
     };
     const res = await axios.post("http://localhost:3001/users", payload);
-    console.log(res);
+    if (res.status === 201) {
+      this.props.history.push("/");
+    } else {
+      throw Error("Error Creating user");
+    }
   };
 
   public handleChange = (e: any) => {

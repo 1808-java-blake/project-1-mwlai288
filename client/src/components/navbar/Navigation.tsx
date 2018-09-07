@@ -45,8 +45,6 @@ export default class Navigation extends React.Component<any, any> {
                   <Link to="/create-request">
                     <DropdownItem>Create Request</DropdownItem>
                   </Link>
-                  <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>
