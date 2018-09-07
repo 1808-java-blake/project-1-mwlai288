@@ -25,14 +25,7 @@ export default class SignIn extends React.Component<any, any> {
         method: "post",
         withCredentials: true
       });
-
-      // axios.post(
-      //   "http://localhost:3001/users/login",
-      //   payload
-      // );
-      console.log("Cookies are ", document.cookie);
       localStorage.setItem("user", JSON.stringify(res));
-
       if (res.statusText === "OK" && res.data.username === "Batman") {
         this.props.history.push("/requests");
       } else {
