@@ -1,8 +1,8 @@
-export function authMiddleware(...role: number[]) {
+export function authMiddleware(...role: string[]) {
   return (req, resp, next) => {
-    // console.log(req.session);
-    console.log(role);
-    const user = req.session.role;
+    // console.log(req);
+    // console.log(role);
+    const user = req.session.user;
     console.log(user);
     if (!user) {
       resp.sendStatus(401);

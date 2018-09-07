@@ -19,7 +19,10 @@ export default class ApproveDeny extends React.Component<any, any> {
 
   public async componentDidMount() {
     const id = this.props.match.params.id;
-    const res = await axios.get(`http://localhost:3001/reimbursement/${id}`);
+    const res = await axios(`http://localhost:3001/reimbursement/${id}`, {
+      method: "get",
+      withCredentials: true
+    });
     this.setState({
       reimbursements: res.data
     });
@@ -31,7 +34,11 @@ export default class ApproveDeny extends React.Component<any, any> {
     const id = this.props.match.params.id;
     const payload = this.state.reimbursements;
     try {
-      await axios.put(`http://localhost:3001/reimbursement/${id}`, payload);
+      await axios(`http://localhost:3001/reimbursement/${id}`, {
+        data: payload,
+        method: "put",
+        withCredentials: true
+      });
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +49,11 @@ export default class ApproveDeny extends React.Component<any, any> {
     const id = this.props.match.params.id;
     const payload = this.state.reimbursements;
     try {
-      await axios.put(`http://localhost:3001/reimbursement/${id}`, payload);
+      await axios(`http://localhost:3001/reimbursement/${id}`, {
+        data: payload,
+        method: "put",
+        withCredentials: true
+      });
     } catch (error) {
       console.log(error);
     }

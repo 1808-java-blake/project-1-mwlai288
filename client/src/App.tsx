@@ -7,7 +7,7 @@ import SignIn from "./components/authentication/SignIn";
 import SignUp from "./components/authentication/SignUp";
 import ApproveDeny from "./components/manager/ApproveDeny";
 import Navigation from "./components/navbar/Navigation";
-// import Requests from "./components/employees/Requests";
+import Dashboard from "./components/employees/Dashboard";
 
 class App extends React.Component {
   public render() {
@@ -19,6 +19,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={SignIn} />
               <Route path="/sign-up" component={SignUp} />
+              <Route path="/dashboard" component={Dashboard} />
               <Route path="/requests" component={AllRequests} />
               <Route path="/request/:id" component={ApproveDeny} />
               <Route path="/create-request" component={CreateRequests} />

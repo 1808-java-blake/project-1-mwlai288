@@ -10,14 +10,14 @@ export const reimbursementRouter = express.Router(); // routers represent a subs
  * Find all reimbursements
  */
 reimbursementRouter.get("", [
-  // authMiddleware(1, 2),
-  async (req: Request, resp: Response) => {
+  authMiddleware("manager"),
+  async (req, res) => {
     try {
       console.log("retrieving all reimbursement requests");
-      let req = await reimbursementDao.findAll();
-      resp.json(req);
+      let request = await reimbursementDao.findAll();
+      res.json(request);
     } catch (err) {
-      resp.sendStatus(500);
+      res.sendStatus(500);
     }
   }
 ]);
@@ -26,7 +26,7 @@ reimbursementRouter.get("", [
  * Create Reimbursement
  */
 reimbursementRouter.post("", [
-  // authMiddleware("2"),
+  // authMiddleware(""),
   async (req, res) => {
     try {
       const id = await reimbursementDao.createReimbursement(req.body);
@@ -35,7 +35,6 @@ reimbursementRouter.post("", [
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
-      console.log("reimbursement request created");
       res.json("reimbursement request created");
     }
   }
@@ -63,14 +62,17 @@ reimbursementRouter.get("/:id", async (req, res) => {
 /**
  * Update Reimbursement
  */
-reimbursementRouter.put("/:id", async (req, res) => {
-  try {
-    const id = +req.params.id; // convert the id to a number
-    const updatedRequest = await reimbursementDao.updateRequest(req.body, id);
-    res.status(201);
-    res.json(updatedRequest);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
+reimbursementRouter.put("/:id", [
+  authMiddleware("manager"),
+  async (req, res) => {
+    try {
+      const id = +req.params.id; // convert the id to a number
+      const updatedRequest = await reimbursementDao.updateRequest(req.body, id);
+      res.status(201);
+      res.json(updatedRequest);
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(500);
+    }
   }
-});
+]);

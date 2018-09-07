@@ -1,6 +1,8 @@
 import axios from "axios";
 import * as React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+// import { setAxiosHeaders } from "../../util";
+// import { withRouter } from "react-router-dom";
 
 export default class SignIn extends React.Component<any, any> {
   constructor(props: any) {
@@ -18,11 +20,24 @@ export default class SignIn extends React.Component<any, any> {
       ers_username: this.state.ers_username
     };
     try {
-      const res = await axios.post(
-        "http://localhost:3001/users/login",
-        payload
-      );
-      console.log(res.statusText);
+      const res = await axios("http://localhost:3001/users/login", {
+        data: payload,
+        method: "post",
+        withCredentials: true
+      });
+
+      // axios.post(
+      //   "http://localhost:3001/users/login",
+      //   payload
+      // );
+      console.log("Cookies are ", document.cookie);
+      localStorage.setItem("user", JSON.stringify(res));
+
+      if (res.statusText === "OK" && res.data.username === "Batman") {
+        this.props.history.push("/requests");
+      } else {
+        this.props.history.push("/dashboard");
+      }
     } catch (error) {
       console.log(error);
     }

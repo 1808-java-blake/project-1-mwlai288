@@ -7,7 +7,8 @@ export class User {
   first_name = "";
   last_name = "";
   email = "";
-  role = 1;
+  roleId = 0;
+  role = "";
   reimbursement: ReimbRequest[] = [];
   constructor(
     id?: number,
@@ -16,7 +17,8 @@ export class User {
     first_name?: string,
     last_name?: string,
     email?: string,
-    role?: number,
+    roleId?: number,
+    role?: string,
     reimbursement?: ReimbRequest[]
   ) {
     id && (this.id = id);
@@ -25,6 +27,7 @@ export class User {
     first_name && (this.first_name = first_name);
     last_name && (this.last_name = last_name);
     email && (this.email = email);
+    roleId && (this.roleId = roleId);
     role && (this.role = role);
     reimbursement && (this.reimbursement = reimbursement);
   }

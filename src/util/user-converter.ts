@@ -12,6 +12,7 @@ export function userConverter(user: SqlUser) {
     user.user_first_name,
     user.user_last_name,
     user.user_email,
-    user.user_role_id
+    user.user_role_id,
+    user.user_role
   );
 }

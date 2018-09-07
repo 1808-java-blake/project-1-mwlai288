@@ -55,7 +55,7 @@ userRouter.post("", async (req, res) => {
 });
 
 /**
- * Add a movie to users list
+ * Add a reimbursement to users list
  */
 userRouter.post("/:id/reimbursement", async (req, resp) => {
   console.log("creating user");
@@ -85,9 +85,10 @@ userRouter.post("/login", async (req, res) => {
     );
     if (user) {
       req.session.user = user;
+      console.log(user);
       res.json(user);
     } else {
-      res.sendStatus(401);
+      res.sendStatus(400);
     }
   } catch (err) {
     console.log(err);

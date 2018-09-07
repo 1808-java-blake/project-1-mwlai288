@@ -93,6 +93,8 @@ export async function findByUsernameAndPassword(
   try {
     const res = await client.query(
       `SELECT * FROM expense_reimbursement.ers_users u
+        LEFT JOIN expense_reimbursement.ers_user_roles ur 
+        ON u.user_role_id = ur.ers_user_role_id
         WHERE u.ers_username = $1
         AND u.ers_password = $2`,
       [username, password]
