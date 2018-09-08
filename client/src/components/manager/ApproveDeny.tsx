@@ -1,6 +1,8 @@
 import * as React from "react";
 import axios from "axios";
 import { Button } from "reactstrap";
+import * as moment from "moment";
+
 export default class ApproveDeny extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -23,6 +25,7 @@ export default class ApproveDeny extends React.Component<any, any> {
       method: "get",
       withCredentials: true
     });
+    console.log(res);
     this.setState({
       reimbursements: res.data
     });
@@ -70,9 +73,11 @@ export default class ApproveDeny extends React.Component<any, any> {
           <li> Amount: ${reimbursements.amount}</li>
           <li> Request Description: {reimbursements.description}</li>
           <li> User Id: {reimbursements.author} </li>
-          <li>Request Submitted: {reimbursements.submitted}</li>
-          <li> Request Resolved: {reimbursements.resolved} </li>
-          <li> Manager: {reimbursements.resolverId} </li>
+          <li>
+            Request Submitted:
+            {moment(reimbursements.reimb_submitted).format("LLLL")}
+          </li>
+
           <li>
             Request Type:
             {reimbursements.typeId}

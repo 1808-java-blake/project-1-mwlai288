@@ -1,8 +1,7 @@
 import axios from "axios";
 import * as React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-// import { setAxiosHeaders } from "../../util";
-// import { withRouter } from "react-router-dom";
+import styled from "styled-components";
 
 export default class SignIn extends React.Component<any, any> {
   constructor(props: any) {
@@ -46,30 +45,50 @@ export default class SignIn extends React.Component<any, any> {
 
   public render() {
     return (
-      <div>
-        <h1>Sign In</h1>
-        <Form onSubmit={this.signIn}>
-          <FormGroup>
-            <Label for="username">Username</Label>
-            <Input
-              onChange={this.handleChange}
-              type="text"
-              name="ers_username"
-              placeholder="Enter Username"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="password">Password</Label>
-            <Input
-              onChange={this.handleChange}
-              type="password"
-              name="ers_password"
-              placeholder="Enter Password"
-            />
-          </FormGroup>
-          <Button>Sign In</Button>
-        </Form>
-      </div>
+      <BackgroundStyle>
+        <BoxView>
+          <Title>Sign In Hero</Title>
+          <Form onSubmit={this.signIn}>
+            <FormGroup>
+              <Label for="username">Username</Label>
+              <Input
+                onChange={this.handleChange}
+                type="text"
+                name="ers_username"
+                placeholder="Enter Username"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="password">Password</Label>
+              <Input
+                onChange={this.handleChange}
+                type="password"
+                name="ers_password"
+                placeholder="Enter Password"
+              />
+            </FormGroup>
+            <Button>Sign In</Button>
+          </Form>
+        </BoxView>
+      </BackgroundStyle>
     );
   }
 }
+
+const BackgroundStyle = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+`;
+
+const BoxView = styled.div`
+  padding: 2.4rem;
+  width: 24rem;
+`;
+
+const Title = styled.h1`
+  font-size: 3.5rem;
+  text-align: center;
+`;

@@ -15,7 +15,7 @@ export async function findAll(): Promise<ReimbRequest[]> {
       INNER JOIN expense_reimbursement.ers_reimbursement ON ers_reimbursement.reimb_author = ers_users.ers_users_id
       INNER JOIN expense_reimbursement.ers_reimbursement_status ON ers_reimbursement.reimb_status_id = ers_reimbursement_status.reimb_status_id
       INNER JOIN expense_reimbursement.ers_user_roles ON ers_reimbursement.reimb_resolver = ers_user_roles.ers_user_role_id
-      INNER JOIN expense_reimbursement.ers_reimbursement_type ON ers_reimbursement.reimb_type_id = ers_reimbursement_type.reimb_type_id`
+      INNER JOIN expense_reimbursement.ers_reimbursement_type ON ers_reimbursement.reimb_type_id = ers_reimbursement_type.reimb_type_id ORDER BY reimb_status`
     );
     return res.rows;
   } finally {
