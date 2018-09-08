@@ -10,12 +10,11 @@ export async function findAll(): Promise<ReimbRequest[]> {
   const client = await connectionPool.connect();
   try {
     const res = await client.query(
-      `SELECT ers_username, ers_users_id, reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_status, user_role, reimb_type
+      `SELECT ers_username, reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_type, reimb_status
       FROM expense_reimbursement.ers_users 
       INNER JOIN expense_reimbursement.ers_reimbursement ON ers_reimbursement.reimb_author = ers_users.ers_users_id
       INNER JOIN expense_reimbursement.ers_reimbursement_status ON ers_reimbursement.reimb_status_id = ers_reimbursement_status.reimb_status_id
-      INNER JOIN expense_reimbursement.ers_user_roles ON ers_reimbursement.reimb_resolver = ers_user_roles.ers_user_role_id
-      INNER JOIN expense_reimbursement.ers_reimbursement_type ON ers_reimbursement.reimb_type_id = ers_reimbursement_type.reimb_type_id ORDER BY reimb_status`
+      INNER JOIN expense_reimbursement.ers_reimbursement_type ON ers_reimbursement.reimb_type_id = ers_reimbursement_type.reimb_type_id`
     );
     return res.rows;
   } finally {
@@ -31,7 +30,7 @@ export async function findById(id: number): Promise<ReimbRequest> {
   const client = await connectionPool.connect();
   try {
     const res = await client.query(
-      "SELECT * FROM expense_reimbursement.ers_reimbursement WHERE reimb_id = $1",
+      `SELECT * FROM expense_reimbursement.ers_reimbursement WHERE reimb_id = $1`,
       [id]
     );
     let reimbursement: SqlReimburseRequest = res.rows[0];

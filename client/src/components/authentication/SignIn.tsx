@@ -2,6 +2,7 @@ import axios from "axios";
 import * as React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export default class SignIn extends React.Component<any, any> {
   constructor(props: any) {
@@ -69,6 +70,7 @@ export default class SignIn extends React.Component<any, any> {
             </FormGroup>
             <Button>Sign In</Button>
           </Form>
+          <Link to="/sign-up">New Recruit? Sign Up Here</Link>
         </BoxView>
       </BackgroundStyle>
     );
@@ -84,8 +86,13 @@ const BackgroundStyle = styled.div`
 `;
 
 const BoxView = styled.div`
-  padding: 2.4rem;
-  width: 24rem;
+  background-color: #221fe7;
+  border-color: #ec0f0f;
+  border-style: solid;
+  border-width: thick;
+  color: #f2f221;
+  padding: 2rem;
+  width: 25rem;
 `;
 
 const Title = styled.h1`

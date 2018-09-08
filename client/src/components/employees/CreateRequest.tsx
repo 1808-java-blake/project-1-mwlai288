@@ -85,7 +85,7 @@ export default class CreateRequests extends React.Component<any, any> {
           </FormGroup>
           <FormGroup row>
             <Label for="type" sm={2}>
-              Select
+              Reimbursement Type
             </Label>
             <Col sm={10}>
               <Input
@@ -98,7 +98,7 @@ export default class CreateRequests extends React.Component<any, any> {
           </FormGroup>
           <FormGroup check row>
             <Col sm={{ size: 10, offset: 2 }}>
-              <Button>Submit</Button>
+              <Button color="primary">Submit</Button>
             </Col>
           </FormGroup>
         </Form>

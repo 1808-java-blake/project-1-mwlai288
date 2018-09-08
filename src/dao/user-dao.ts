@@ -132,8 +132,7 @@ export async function findById(id: number): Promise<User> {
       `SELECT * FROM expense_reimbursement.ers_users eu
       LEFT JOIN expense_reimbursement.ers_reimbursement er
       ON eu.ers_users_id = er.reimb_author
-      WHERE eu.ers_users_id = $1
-      `,
+      WHERE eu.ers_users_id = $1 `,
       [id]
     );
 

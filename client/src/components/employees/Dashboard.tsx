@@ -1,5 +1,7 @@
 import axios from "axios";
 import * as React from "react";
+import styled from "styled-components";
+import * as moment from "moment";
 
 export default class Dashboard extends React.Component<any, any> {
   constructor(props: any) {
@@ -20,24 +22,66 @@ export default class Dashboard extends React.Component<any, any> {
   }
 
   public render() {
-    console.log(this.state.reimbursements);
-    return (
-      <div>
-        Welcome: {this.state.users.first_name}
-        <br />
-        {this.state.users.username}
-        's Request History:
-        {this.state.reimbursements.map((reimbursement: any) => (
-          <div key={reimbursement.id}>
-            <p> {reimbursement.ers_username} </p>
-            <p>${reimbursement.amount}</p>
-            <p> {reimbursement.description} </p>
-            <p> {reimbursement.submitted} </p>
-            <p> {reimbursement.resolved} </p>
-            <p> {reimbursement.reimb_status} </p>
+    if (this.state.reimbursements.length === 0) {
+      return <h3>No current requests.</h3>;
+    } else {
+      return (
+        <div>
+          <Title>
+            Welcome: {this.state.users.username}
+            <br />
+            {this.state.users.username}
+            's Request History:
+          </Title>
+          <div className="table-responsive">
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <TableHeader>Amount</TableHeader>
+                  <TableHeader>Request Description</TableHeader>
+                  <TableHeader>Date Request Submitted</TableHeader>
+                  <TableHeader>Date Request Resolved</TableHeader>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.reimbursements.map((reimbursement: any) => (
+                  <tr
+                    className={
+                      reimbursement.reimb_status === "Approved"
+                        ? "table-success"
+                        : "table-danger"
+                    }
+                    key={reimbursement.id}
+                  >
+                    <TableData>$ {reimbursement.amount} </TableData>
+                    <TableData> {reimbursement.description} </TableData>
+                    <TableData>
+                      {moment(reimbursement.submitted).format("LLLL")}
+                    </TableData>
+                    <TableData>
+                      {moment(reimbursement.resolved).format("LLLL")}
+                    </TableData>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        ))}
-      </div>
-    );
+        </div>
+      );
+    }
   }
 }
+
+const TableHeader = styled.th`
+  align-content: center;
+  text-align: center;
+`;
+
+const TableData = styled.td`
+  text-align: center;
+`;
+
+const Title = styled.h1`
+  font-size: 3.5rem;
+  text-align: center;
+`;

@@ -1,9 +1,11 @@
 import axios from "axios";
-import * as React from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import * as React from "react";
 import * as moment from "moment";
-// import FlipMove from "react-flip-move";
+import * as classnames from "classnames";
+import styled from "styled-components";
+import FlipMove from "react-flip-move";
+import { Input } from "reactstrap";
 
 export default class AllRequests extends React.Component<any, any> {
   constructor(props: any) {
@@ -31,18 +33,14 @@ export default class AllRequests extends React.Component<any, any> {
   public render() {
     const filteredStatus = this.state.reimbursements.filter(
       (reimbursement: any) => {
-        return (
-          reimbursement.reimb_status
-            .toLowerCase()
-            .indexOf(this.state.search.toLowerCase()) !== -1
-        );
+        return reimbursement.reimb_status.indexOf(this.state.search) !== -1;
       }
     );
 
     return (
       <div>
         <Title>The Justice League's Reimbursement Request</Title>
-        <input
+        <Input
           type="text"
           placeholder="Filter Request Status"
           value={this.state.search}
@@ -61,14 +59,13 @@ export default class AllRequests extends React.Component<any, any> {
                 <TableHeader>Request Status</TableHeader>
               </tr>
             </thead>
-            <tbody>
+            <FlipMove typeName="tbody">
               {filteredStatus.map((reimbursement: any) => (
                 <tr
-                  className={
-                    reimbursement.reimb_status === "Approved"
-                      ? "table-success"
-                      : "table-danger"
-                  }
+                  className={classnames("bg-success", {
+                    "bg-danger": reimbursement.reimb_status === "Denied",
+                    "bg-info": reimbursement.reimb_status === "Pending"
+                  })}
                   key={reimbursement.reimb_id}
                 >
                   <TableData> {reimbursement.ers_username} </TableData>
@@ -76,6 +73,8 @@ export default class AllRequests extends React.Component<any, any> {
                   <TableData> {reimbursement.reimb_description} </TableData>
                   <TableData>
                     {moment(reimbursement.reimb_submitted).format("LLLL")}
+                    <br />
+                    {moment(reimbursement.reimb_submitted).fromNow()}
                   </TableData>
                   <TableData>
                     {moment(reimbursement.reimb_resolved).format("LLLL")}
@@ -83,26 +82,37 @@ export default class AllRequests extends React.Component<any, any> {
                   <TableData> {reimbursement.reimb_type} </TableData>
 
                   <TableData>
-                    <Link to={`/request/${reimbursement.reimb_id}`}>
+                    <LinkText to={`/request/${reimbursement.reimb_id}`}>
                       {reimbursement.reimb_status}
-                    </Link>
+                    </LinkText>
                   </TableData>
                 </tr>
               ))}
-            </tbody>
+            </FlipMove>
           </table>
         </div>
       </div>
     );
   }
 }
+
 const TableHeader = styled.th`
   align-content: center;
   text-align: center;
 `;
 
 const TableData = styled.td`
+  font-weight: bold;
   text-align: center;
+`;
+
+const LinkText = styled(Link)`
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  a:hover {
+    color: red;
+  }
 `;
 
 const Title = styled.h1`

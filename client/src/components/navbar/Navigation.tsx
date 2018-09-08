@@ -38,7 +38,6 @@ export default class Navigation extends React.Component<any, any> {
                   Options
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem>View Request</DropdownItem>
                   <Link to="/requests">
                     <DropdownItem>View All</DropdownItem>
                   </Link>
