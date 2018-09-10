@@ -12,6 +12,7 @@
 		"jsx-self-close": false,
 		"jsx-no-lambda": false,
 		"no-console": false,
+		"no-unused-expression": [false, "allow-fast-null-checks"],
 		"jsx-no-bind": false,
 		"jsx-boolean-value": false
 	}

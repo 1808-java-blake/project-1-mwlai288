@@ -62,9 +62,9 @@ export default class AllRequests extends React.Component<any, any> {
             <FlipMove typeName="tbody">
               {filteredStatus.map((reimbursement: any) => (
                 <tr
-                  className={classnames("bg-success", {
-                    "bg-danger": reimbursement.reimb_status === "Denied",
-                    "bg-info": reimbursement.reimb_status === "Pending"
+                  className={classnames("table-success", {
+                    "table-danger": reimbursement.reimb_status === "Denied",
+                    "table-info": reimbursement.reimb_status === "Pending"
                   })}
                   key={reimbursement.reimb_id}
                 >

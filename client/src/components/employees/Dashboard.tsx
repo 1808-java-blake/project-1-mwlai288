@@ -23,13 +23,19 @@ export default class Dashboard extends React.Component<any, any> {
 
   public render() {
     if (this.state.reimbursements.length === 0) {
-      return <h3>No current requests.</h3>;
+      return (
+        <p>
+          No reimbursement requests have been made. Your Id to create
+          reimbursements is {this.state.users.id}.
+        </p>
+      );
     } else {
       return (
         <div>
           <Title>
             Welcome: {this.state.users.username}
             <br />
+            Your Id to create reimbursements is {this.state.users.id}.<br />
             {this.state.users.username}
             's Request History:
           </Title>

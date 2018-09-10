@@ -1,6 +1,8 @@
 import axios from "axios";
 import * as React from "react";
 import { Button, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default class CreateRequests extends React.Component<any, any> {
   constructor(props: any) {
@@ -8,6 +10,7 @@ export default class CreateRequests extends React.Component<any, any> {
     this.state = {
       amount: 0,
       description: "",
+      errors: "",
       id: 0,
       status: "Pending",
       typeId: 1
@@ -22,6 +25,7 @@ export default class CreateRequests extends React.Component<any, any> {
 
   public createRequest = async (e: any) => {
     e.preventDefault();
+
     const payload = {
       amount: this.state.amount,
       description: this.state.description,
@@ -31,7 +35,30 @@ export default class CreateRequests extends React.Component<any, any> {
     };
 
     try {
-      await axios.post("http://localhost:3001/reimbursement", payload);
+      const res = await axios.post(
+        "http://localhost:3001/reimbursement",
+        payload
+      );
+      console.log(res.status);
+      if (res.status === 201) {
+        toast.success("🦄 Request successfully created", {
+          autoClose: 2000,
+          closeOnClick: true,
+          draggable: true,
+          hideProgressBar: true,
+          pauseOnHover: true,
+          position: "top-center"
+        });
+      } else {
+        toast.error("Error creating request", {
+          autoClose: 2000,
+          closeOnClick: true,
+          draggable: true,
+          hideProgressBar: true,
+          pauseOnHover: true,
+          position: "top-center"
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -42,6 +69,16 @@ export default class CreateRequests extends React.Component<any, any> {
       <div>
         <h2>Submit a Reimbursement Request</h2>
         <p>Please provide your user Id and reimbursement type Id.</p>
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          draggable
+          pauseOnHover
+        />
 
         <Form onSubmit={this.createRequest}>
           <FormGroup row>

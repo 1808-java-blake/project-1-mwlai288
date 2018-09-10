@@ -2,6 +2,8 @@ import * as React from "react";
 import axios from "axios";
 import { Button } from "reactstrap";
 import * as moment from "moment";
+import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
 
 export default class ApproveDeny extends React.Component<any, any> {
   constructor(props: any) {
@@ -25,11 +27,10 @@ export default class ApproveDeny extends React.Component<any, any> {
       method: "get",
       withCredentials: true
     });
-    console.log(res);
+
     this.setState({
       reimbursements: res.data
     });
-    console.log(this.state.reimbursements.statusId);
   }
 
   public approveRequest = async (e: any) => {
@@ -37,11 +38,22 @@ export default class ApproveDeny extends React.Component<any, any> {
     const id = this.props.match.params.id;
     const payload = this.state.reimbursements;
     try {
-      await axios(`http://localhost:3001/reimbursement/${id}`, {
+      const res = await axios(`http://localhost:3001/reimbursement/${id}`, {
         data: payload,
         method: "put",
         withCredentials: true
       });
+      if (res.status === 201) {
+        toast.success("🦄 Request approved", {
+          autoClose: 2000,
+          closeOnClick: true,
+          draggable: true,
+          hideProgressBar: true,
+          pauseOnHover: true,
+          position: "top-center"
+        });
+        this.props.history.push("/requests");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -52,11 +64,23 @@ export default class ApproveDeny extends React.Component<any, any> {
     const id = this.props.match.params.id;
     const payload = this.state.reimbursements;
     try {
-      await axios(`http://localhost:3001/reimbursement/${id}`, {
+      const res = await axios(`http://localhost:3001/reimbursement/${id}`, {
         data: payload,
         method: "put",
         withCredentials: true
       });
+      console.log(res.status);
+      if (res.status === 201) {
+        toast.success("🦄 Request denied", {
+          autoClose: 2000,
+          closeOnClick: true,
+          draggable: true,
+          hideProgressBar: true,
+          pauseOnHover: true,
+          position: "top-center"
+        });
+        this.props.history.push("/requests");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -66,27 +90,47 @@ export default class ApproveDeny extends React.Component<any, any> {
     const { reimbursements } = this.state;
     return (
       <div>
-        <h2>hello</h2>
-        {/* {this.state.reimbursements.map((reimbursement: any) => {
-          return ( */}
-        <ul key={reimbursements.id}>
-          <li> Amount: ${reimbursements.amount}</li>
-          <li> Request Description: {reimbursements.description}</li>
-          <li> User Id: {reimbursements.author} </li>
-          <li>
-            Request Submitted:
-            {moment(reimbursements.reimb_submitted).format("LLLL")}
-          </li>
-
-          <li>
-            Request Type:
-            {reimbursements.typeId}
-          </li>
-          <li>
-            Request Status:
-            {reimbursements.statusId}
-          </li>
-        </ul>
+        <Title>Approve or Deny the Request</Title>
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          draggable
+          pauseOnHover
+        />
+        <div className="table-responsive" key={reimbursements.id}>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <TableHeader>Amount</TableHeader>
+                <TableHeader>Request Description</TableHeader>
+                <TableHeader>User Id</TableHeader>
+                <TableHeader>Date Request Submitted</TableHeader>
+                <TableHeader>Request Type</TableHeader>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <TableData> Amount: ${reimbursements.amount}</TableData>
+                <TableData>
+                  Request Description: {reimbursements.description}
+                </TableData>
+                <TableData> {reimbursements.author} </TableData>
+                <TableData>
+                  Request Submitted:
+                  {moment(reimbursements.reimb_submitted).format("LLLL")}
+                </TableData>
+                <TableData>
+                  Request Type:
+                  {reimbursements.typeId}
+                </TableData>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <form>
           <div>
@@ -105,11 +149,21 @@ export default class ApproveDeny extends React.Component<any, any> {
             Deny
           </Button>
         </form>
-
-        {/* ); */}
-        {/* })} */}
-        {/* <button onClick={this.approveRequest}>Approve</button> */}
       </div>
     );
   }
 }
+
+const TableHeader = styled.th`
+  align-content: center;
+  text-align: center;
+`;
+
+const TableData = styled.td`
+  text-align: center;
+`;
+
+const Title = styled.h1`
+  font-size: 3.5rem;
+  text-align: center;
+`;

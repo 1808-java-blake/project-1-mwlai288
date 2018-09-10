@@ -29,6 +29,7 @@ userRouter.get("/:id", async (req, resp) => {
     console.log(user);
     if (user !== undefined) {
       req.session.user = user;
+      console.log(user);
       resp.json(user);
     } else {
       resp.sendStatus(400);
